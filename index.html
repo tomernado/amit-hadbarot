@@ -63,8 +63,7 @@
     body { padding-top: 64px; }
     .navbar {
       position: fixed; top: 0; left: 0; right: 0; z-index: 200;
-      background: #1b5e20;
-      box-shadow: 0 2px 20px rgba(0,0,0,0.3);
+      background: transparent;
       padding: 0 20px;
       height: 64px;
       display: flex; align-items: center; gap: 14px;
@@ -399,7 +398,6 @@
   <!-- ══ Navbar ══ -->
   <nav class="navbar">
     <div class="nav-spacer"></div>
-    <button class="nav-license" onclick="openCertModal()">🪪 מורשה רשמית 2128</button>
     <a class="nav-phone" href="tel:0528361196">📞 <span class="nav-phone-text">052-8361196</span></a>
     <button class="nav-cta" onclick="document.getElementById('pestForm').scrollIntoView({behavior:'smooth'})">📋 קבלת הצעת מחיר</button>
   </nav>
