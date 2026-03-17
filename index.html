@@ -69,19 +69,6 @@
       height: 64px;
       display: flex; align-items: center; gap: 14px;
     }
-    .nav-bug {
-      flex-shrink: 0; width: 50px; height: 50px;
-      background: #fff; border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      overflow: hidden;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.25);
-    }
-    .nav-bug img {
-      width: 92%; height: auto;
-    }
-    .nav-brand { display: flex; flex-direction: column; gap: 1px; }
-    .nav-brand-name { font-size: 16px; font-weight: 800; color: #fff; white-space: nowrap; }
-    .nav-brand-sub  { font-size: 11px; color: rgba(255,255,255,0.65); white-space: nowrap; }
     .nav-spacer { flex: 1; }
     .nav-license {
       background: #fef9c3; border: none; border-radius: 999px;
@@ -106,7 +93,6 @@
     .nav-cta:hover { transform: translateY(-1px); box-shadow: 0 6px 18px rgba(74,222,128,.55); }
     @media(max-width: 620px) {
       .navbar { gap: 8px; padding: 0 12px; }
-      .nav-brand-sub { display: none; }
       .nav-license { display: none; }
       .nav-phone-text { display: none; }
       .nav-cta { padding: 9px 14px; font-size: 13px; }
@@ -117,10 +103,22 @@
       text-align: center; padding: 22px 20px 0;
       position: relative; z-index: 1;
     }
+    .hero-brand {
+      display: flex; align-items: center; justify-content: center;
+      gap: 12px; margin-bottom: 8px;
+    }
+    .hero-bug {
+      width: 64px; height: 64px; flex-shrink: 0;
+      background: #fff; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      overflow: hidden;
+      box-shadow: 0 3px 12px rgba(0,0,0,0.2);
+    }
+    .hero-bug img { width: 92%; height: auto; }
     .hero-title {
-      font-size: 1.7rem; font-weight: 800; color: #1a4d1e;
+      font-size: 1.7rem; font-weight: 800; color: #c0392b;
       text-shadow: 0 0 14px rgba(255,255,255,0.9), 0 2px 6px rgba(255,255,255,0.8);
-      margin: 0 0 6px;
+      margin: 0;
     }
     .hero-sub { font-size: 13px; color: #2d6b31; margin: 2px 0; font-weight: 500; }
     .hero-badges { display: flex; flex-wrap: wrap; justify-content: center; gap: 7px; margin: 12px 0 5px; }
@@ -400,13 +398,6 @@
 
   <!-- ══ Navbar ══ -->
   <nav class="navbar">
-    <div class="nav-bug">
-      <img src="logo.jpeg" alt="עמית הדברות" />
-    </div>
-    <div class="nav-brand">
-      <span class="nav-brand-name">עמית הדברות</span>
-      <span class="nav-brand-sub">תיקנים · מכרסמים · פרעושים · נמלים</span>
-    </div>
     <div class="nav-spacer"></div>
     <button class="nav-license" onclick="openCertModal()">🪪 מורשה רשמית 2128</button>
     <a class="nav-phone" href="tel:0528361196">📞 <span class="nav-phone-text">052-8361196</span></a>
@@ -415,14 +406,19 @@
 
   <!-- ══ Hero ══ -->
   <div class="site-hero">
-    <h1 class="hero-title">עמית כהן – הדברות</h1>
-    <p class="hero-sub">רישיון הדברה – המשרד להגנת הסביבה מס׳ 2128</p>
+    <div class="hero-brand">
+      <div class="hero-bug">
+        <img src="logo.jpeg" alt="עמית הדברות" />
+      </div>
+      <h1 class="hero-title">עמית הדברות</h1>
+    </div>
+    <p class="hero-sub">היתר הדברה 2128 – המשרד להגנת הסביבה</p>
     <p class="hero-sub">ותק וניסיון של 15 שנה</p>
     <div class="hero-badges">
       <span class="hbadge">🌿 טבעי ובטוח</span>
       <span class="hbadge">⭐ 15 שנות ניסיון</span>
     </div>
-    <button class="hbadge-cert" onclick="openCertModal()">📜 תעודת רישיון רשמית</button>
+    <button class="hbadge-cert" onclick="openCertModal()">📜 היתר הדברה – לחץ לצפייה</button>
     <button class="hero-cta" onclick="document.getElementById('pestForm').scrollIntoView({behavior:'smooth'})">
       📋 קבלת הצעת מחיר
     </button>
@@ -627,7 +623,7 @@
 
   <!-- ══ Footer ══ -->
   <footer>
-    <strong>עמית כהן – הדברות מקצועית ואקולוגית</strong><br />
+    <strong>עמית הדברות</strong><br />
     רישיון מס׳ 2128 &nbsp;|&nbsp; ותק של 15 שנה<br />
     🌿 הדברה בטוחה לסביבה ולמשפחה שלך
     <div class="footer-credit">
