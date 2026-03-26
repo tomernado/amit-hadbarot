@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>עמית הדברות</title>
+  <link rel="icon" type="image/jpeg" href="logo.jpeg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <style>
+    *, *::before, *::after { font-family: 'Rubik', sans-serif; box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; direction: rtl; overflow-x: hidden; min-height: 100%; }
+
+    /* ═══ Fixed gradient background – works on iOS too ═══ */
+    .bg-layer {
+      position: fixed; inset: 0; z-index: -2;
+      background: linear-gradient(
+        to bottom,
+        #5aad60 0%,
+        #6dbf72 12%,
+        #7fce84 24%,
+        #9dd89f 38%,
+        #b8e8ba 54%,
+        #d4f0d5 68%,
+        #e9f7ea 82%,
+        #f5fbf0 100%
+      );
+    }
+
+    /* ═══ Crawling bugs ═══ */
+    .bug-wrap {
+      position: fixed; inset: 0; z-index: -1;
+      pointer-events: none; overflow: hidden;
+    }
+    .bug {
+      position: absolute;
+      font-size: 22px;
+      opacity: 0.18;
+      animation-timing-function: linear;
+      animation-iteration-count: infinite;
+      filter: drop-shadow(0 0 3px rgba(0,0,0,0.3));
+    }
+    .b1 { top: 8%;  animation: goRight 26s linear infinite 0s;   }
+    .b2 { top: 22%; animation: goLeft  32s linear infinite -7s;  }
+    .b3 { top: 41%; animation: goRight 20s linear infinite -14s; }
+    .b4 { top: 60%; animation: goLeft  36s linear infinite -3s;  }
+    .b5 { top: 76%; animation: goRight 28s linear infinite -19s; }
+    .b6 { top: 90%; animation: goLeft  24s linear infinite -11s; }
+
+    @keyframes goRight {
+      from { left: -5%;  transform: scaleX(1)  rotate(-5deg); }
+      to   { left: 108%; transform: scaleX(1)  rotate(-5deg); }
+    }
+    @keyframes goLeft {
+      from { left: 108%; transform: scaleX(-1) rotate(5deg); }
+      to   { left: -5%;  transform: scaleX(-1) rotate(5deg); }
+    }
+
+    /* ═══ Navbar ═══ */
+    html { scroll-padding-top: 68px; }
+    .navbar {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+      background: transparent;
+      padding: 0 20px;
+      height: 58px;
+      display: flex; align-items: center; gap: 14px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s ease;
+    }
+    .navbar.visible {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .nav-spacer { flex: 1; }
+    .nav-license {
+      background: #fef9c3; border: none; border-radius: 999px;
+      padding: 6px 13px; font-size: 12px; font-weight: 700; color: #713f12;
+      cursor: pointer; white-space: nowrap; font-family: 'Rubik', sans-serif;
+      transition: opacity .15s;
+    }
+    .nav-license:hover { opacity: 0.82; }
+    .nav-phone {
+      color: rgba(255,255,255,0.88); font-size: 14px; font-weight: 600;
+      text-decoration: none; white-space: nowrap; display: flex; align-items: center; gap: 4px;
+    }
+    .nav-phone:hover { color: #fff; }
+    .nav-cta {
+      background: linear-gradient(135deg, #4ade80, #16a34a);
+      color: #fff; border: none; border-radius: 999px;
+      padding: 10px 20px; font-size: 14px; font-weight: 800;
+      font-family: 'Rubik', sans-serif; cursor: pointer; white-space: nowrap;
+      box-shadow: 0 3px 12px rgba(74,222,128,.45);
+      transition: all .2s; letter-spacing: 0.2px;
+    }
+    .nav-cta:hover { transform: translateY(-1px); box-shadow: 0 6px 18px rgba(74,222,128,.55); }
+    @media(max-width: 620px) {
+      .navbar { gap: 8px; padding: 0 12px; }
+      .nav-license { display: none; }
+      .nav-phone-text { display: none; }
+      .nav-cta { padding: 9px 14px; font-size: 13px; }
+    }
+
+    /* ═══ Hero section ═══ */
+    .site-hero {
+      text-align: center; padding: 10px 20px 0;
+      position: relative; z-index: 1;
+    }
+    .hero-brand {
+      display: flex; align-items: center; justify-content: center;
+      gap: 14px; margin-bottom: 10px;
+    }
+    .hero-bug {
+      width: 84px; height: 84px; flex-shrink: 0;
+      background: #fff; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      overflow: hidden;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.22);
+    }
+    .hero-bug img { width: 92%; height: auto; }
+    .hero-title {
+      font-size: 2.4rem; font-weight: 800; color: #c0392b;
+      text-shadow: 0 0 16px rgba(255,255,255,0.95), 0 2px 8px rgba(255,255,255,0.85);
+      margin: 0;
+    }
+    .hero-sub { font-size: 13px; color: #2d6b31; margin: 2px 0; font-weight: 500; }
+    .hero-badges { display: flex; flex-wrap: wrap; justify-content: center; gap: 7px; margin: 12px 0 5px; }
+    .hbadge {
+      background: rgba(255,255,255,0.55); border: 1px solid rgba(255,255,255,0.7);
+      color: #1a4d1e; border-radius: 999px;
+      padding: 4px 13px; font-size: 12px; font-weight: 600;
+      backdrop-filter: blur(4px); cursor: default;
+    }
+    .hbadge-cert {
+      display: inline-block; margin-top: 5px; margin-bottom: 14px;
+      background: rgba(20,50,20,0.55); border: 1.5px solid rgba(255,255,255,0.45);
+      color: #fff; border-radius: 999px;
+      padding: 6px 18px; font-size: 13px; font-weight: 700;
+      backdrop-filter: blur(4px); cursor: pointer;
+      font-family: 'Rubik', sans-serif;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+      transition: all .18s;
+    }
+    .hbadge-cert:hover { background: rgba(20,50,20,0.75); border-color: rgba(255,255,255,0.7); transform: translateY(-1px); }
+    .hero-cta {
+      display: inline-block; margin-bottom: 18px;
+      padding: 13px 30px; border: none; border-radius: 999px;
+      background: linear-gradient(135deg, #15803d, #22c55e);
+      color: #fff; font-size: 15px; font-weight: 800;
+      font-family: 'Rubik', sans-serif; cursor: pointer;
+      box-shadow: 0 5px 18px rgba(34,197,94,.45);
+      transition: all .2s; letter-spacing: 0.2px;
+    }
+    .hero-cta:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(34,197,94,.55); }
+
+    /* Certificate thumbnail */
+    .cert-thumb-wrap {
+      display: inline-block; margin-top: 16px; cursor: pointer;
+      border-radius: 14px; overflow: hidden;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+      border: 3px solid rgba(255,255,255,0.7);
+      transition: transform .2s, box-shadow .2s;
+      max-width: 160px;
+      position: relative;
+    }
+    .cert-thumb-wrap:hover { transform: translateY(-3px) scale(1.02); box-shadow: 0 8px 24px rgba(0,0,0,0.3); }
+    .cert-thumb-img { width: 160px; height: auto; display: block; }
+    .cert-thumb-label {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      background: rgba(0,0,0,0.55); color: #fff;
+      font-size: 11px; font-weight: 600; text-align: center;
+      padding: 5px 4px; backdrop-filter: blur(3px);
+    }
+
+    /* wave divider */
+    .wave { display: block; line-height: 0; position: relative; z-index: 1; }
+    .wave svg { width: 100%; height: 50px; }
+
+    /* ═══ Main card ═══ */
+    main { position: relative; z-index: 1; padding: 24px 16px 40px; overflow: visible; }
+    .main-card {
+      max-width: 600px; margin: 0 auto;
+      background: rgba(255,255,255,0.97);
+      border-radius: 24px;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.14);
+      padding: 28px 24px;
+    }
+    .form-heading { font-size: 1.5rem; font-weight: 800; color: #14532d; text-align: center; margin-bottom: 4px; }
+    .form-sub     { font-size: 13.5px; color: #6b7280; text-align: center; margin-bottom: 24px; }
+
+    /* ═══ Section cards ═══ */
+    .sc {
+      background: #f4fdf6;
+      border: 1.5px solid #d1fae5;
+      border-radius: 16px;
+      padding: 18px 16px;
+      margin-bottom: 18px;
+    }
+    .sc-title {
+      font-size: 15px; font-weight: 700; color: #14532d;
+      margin-bottom: 14px; display: flex; align-items: center; gap: 6px;
+    }
+
+    /* ═══ Inputs ═══ */
+    .lbl { display: block; font-size: 13px; font-weight: 600; color: #374151; margin-bottom: 5px; }
+    .inp {
+      width: 100%; padding: 11px 14px;
+      border: 1.5px solid #d1d5db; border-radius: 11px;
+      font-size: 15px; font-family: 'Rubik', sans-serif;
+      color: #1f2937; background: #fff; direction: rtl;
+      outline: none; transition: border-color .2s, box-shadow .2s;
+    }
+    .inp:focus { border-color: #4ade80; box-shadow: 0 0 0 3px rgba(74,222,128,.2); }
+    textarea.inp { resize: vertical; min-height: 80px; }
+
+    /* ═══ Pest checkboxes (multi-select pills) ═══ */
+    .pest-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 9px; }
+    @media(min-width:460px){ .pest-grid { grid-template-columns: repeat(3,1fr); } }
+    .pest-opt input[type=checkbox] { display: none; }
+    .pest-pill {
+      display: flex; align-items: center; justify-content: center;
+      padding: 10px 6px; gap: 5px;
+      border: 2px solid #e5e7eb; border-radius: 12px;
+      font-size: 14px; font-weight: 500; color: #374151;
+      background: #fff; cursor: pointer;
+      transition: all .18s; text-align: center;
+      user-select: none;
+    }
+    .pest-opt input:checked + .pest-pill {
+      border-color: #16a34a; background: #f0fdf4; color: #14532d;
+      box-shadow: 0 0 0 3px rgba(34,197,94,.18);
+      font-weight: 600;
+    }
+    .pest-pill:hover { border-color: #86efac; background: #f0fdf4; }
+
+    /* ═══ Regular checkboxes ═══ */
+    .chk-row {
+      display: flex; align-items: center; gap: 10px;
+      font-size: 15px; color: #374151;
+      cursor: pointer; margin-bottom: 10px; user-select: none;
+    }
+    .chk-row:last-child { margin-bottom: 0; }
+    .chk-row input[type=checkbox] {
+      width: 19px; height: 19px; accent-color: #22c55e;
+      flex-shrink: 0; cursor: pointer;
+    }
+
+    /* ═══ Submit ═══ */
+    .submit-btn {
+      width: 100%; padding: 17px;
+      background: linear-gradient(135deg, #15803d, #22c55e);
+      color: #fff; border: none; border-radius: 14px;
+      font-size: 17px; font-weight: 700;
+      font-family: 'Rubik', sans-serif; cursor: pointer;
+      box-shadow: 0 5px 18px rgba(34,197,94,.4);
+      transition: all .2s; margin-top: 6px;
+      letter-spacing: 0.3px;
+    }
+    .submit-btn:hover  { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(34,197,94,.5); }
+    .submit-btn:active { transform: translateY(0); }
+
+    /* ═══ Footer ═══ */
+    footer {
+      position: relative; z-index: 1;
+      text-align: center; padding: 24px 16px 52px;
+      font-size: 13px; color: #3a6b3e;
+    }
+    footer strong { color: #1a4d1e; }
+    .footer-brand {
+      display: inline-block;
+      color: #c0392b;
+      font-size: 1.2rem;
+      text-shadow: 0 1px 3px rgba(0,0,0,0.15);
+      border: 2px solid rgba(255,255,255,0.6);
+      border-radius: 10px;
+      padding: 3px 16px;
+      margin-bottom: 6px;
+      background: rgba(255,255,255,0.18);
+    }
+    .footer-credit { margin-top: 12px; padding-top: 10px; border-top: 1px solid rgba(0,0,0,0.08); font-size: 12px; color: #6b9e6e; }
+    .footer-credit a { color: #2d7d32; font-weight: 600; text-decoration: none; }
+    .footer-credit a:hover { text-decoration: underline; }
+
+    .hidden { display: none !important; }
+
+    /* ═══ Prep card ═══ */
+    .prep-card {
+      max-width: 600px; margin: 0 auto 22px;
+      background: rgba(255,255,255,0.97);
+      border-radius: 24px;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.14);
+      padding: 28px 24px 22px;
+      position: relative;
+      overflow: visible;
+    }
+    .prep-card-inner { position: relative; }
+
+    /* Prep header */
+    .prep-heading {
+      font-size: 1.5rem; font-weight: 800; color: #14532d;
+      text-align: center; margin: 0 0 4px;
+    }
+    .prep-services {
+      text-align: center; font-size: 13px; color: #6b7280;
+      margin-bottom: 14px;
+    }
+
+    /* Big CTA button */
+    .prep-cta-btn {
+      display: block; width: 100%; margin-top: 18px;
+      padding: 18px; border: none; border-radius: 16px;
+      background: linear-gradient(135deg, #15803d, #22c55e);
+      color: #fff; font-size: 18px; font-weight: 800;
+      font-family: 'Rubik', sans-serif; cursor: pointer;
+      box-shadow: 0 6px 22px rgba(34,197,94,.45);
+      transition: all .2s; letter-spacing: 0.3px;
+    }
+    .prep-cta-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(34,197,94,.55); }
+    .prep-cta-btn:active { transform: translateY(0); }
+
+    /* Before / After sections */
+    .prep-sections { display: grid; grid-template-columns: 1fr; gap: 14px; }
+    @media(min-width: 520px) { .prep-sections { grid-template-columns: 1fr 1fr; } }
+
+    .prep-section {
+      border-radius: 14px; padding: 14px 16px;
+    }
+    .prep-section-before {
+      background: #fff7f7; border: 1.5px solid #fecaca;
+    }
+    .prep-section-after {
+      background: #f0fdf4; border: 1.5px solid #bbf7d0;
+    }
+    .prep-section-title {
+      font-size: 14px; font-weight: 800;
+      margin-bottom: 10px; display: flex; align-items: center; gap: 6px;
+    }
+    .prep-section-before .prep-section-title { color: #991b1b; }
+    .prep-section-after  .prep-section-title { color: #14532d; }
+
+    .prep-list { list-style: none; padding: 0; margin: 0; }
+    .prep-list li {
+      font-size: 13.5px; color: #374151;
+      padding: 5px 0; border-bottom: 1px solid rgba(0,0,0,0.06);
+      display: flex; align-items: flex-start; gap: 8px; line-height: 1.45;
+    }
+    .prep-list li:last-child { border-bottom: none; }
+    .prep-list li .prep-icon { flex-shrink: 0; font-size: 15px; margin-top: 1px; }
+    .prep-warn {
+      font-size: 12.5px; font-weight: 600;
+      color: #991b1b; margin-top: 8px;
+      background: #fee2e2; border-radius: 8px;
+      padding: 7px 10px; display: flex; align-items: flex-start; gap: 6px;
+    }
+
+    /* Certificate modal */
+    .cert-modal-overlay {
+      display: none; position: fixed; inset: 0; z-index: 1000;
+      background: rgba(0,0,0,0.75); backdrop-filter: blur(4px);
+      justify-content: center; align-items: center; padding: 20px;
+    }
+    .cert-modal-overlay.open { display: flex; }
+    .cert-modal-box {
+      background: #fff; border-radius: 20px; padding: 20px;
+      max-width: 480px; width: 100%;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+      position: relative;
+      animation: modalPop .25s ease-out;
+    }
+    @keyframes modalPop { from { transform: scale(0.85); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+    .cert-modal-close {
+      position: absolute; top: 12px; left: 12px;
+      width: 32px; height: 32px; border-radius: 50%;
+      background: #f3f4f6; border: none; cursor: pointer;
+      font-size: 18px; display: flex; align-items: center; justify-content: center;
+      color: #6b7280; transition: background .15s;
+    }
+    .cert-modal-close:hover { background: #e5e7eb; }
+    .cert-modal-title {
+      font-size: 15px; font-weight: 700; color: #14532d;
+      text-align: center; margin-bottom: 14px;
+    }
+    .cert-modal-img {
+      width: 100%; height: auto; border-radius: 12px;
+      border: 1.5px solid #e5e7eb; display: block;
+    }
+
+    /* ═══ Mobile tweaks ═══ */
+    @media(max-width: 480px) {
+      .header-title { font-size: 1.75rem; }
+      .main-card { padding: 20px 16px; }
+      .prep-card { padding: 20px 16px 18px; }
+      .prep-bug { width: 90px; top: -54px; }
+      .prep-heading { font-size: 1.25rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Gradient background layer -->
+  <div class="bg-layer"></div>
+
+  <!-- Background crawling bugs -->
+  <div class="bug-wrap" aria-hidden="true">
+    <span class="bug b1">🪳</span>
+    <span class="bug b2">🐭</span>
+    <span class="bug b3">🪲</span>
+    <span class="bug b4">🐭</span>
+    <span class="bug b5">🪳</span>
+    <span class="bug b6">🐜</span>
+  </div>
+
+  <!-- ══ Navbar ══ -->
+  <nav class="navbar">
+    <div class="nav-spacer"></div>
+    <a class="nav-phone" href="tel:0528361196">📞 <span class="nav-phone-text">052-8361196</span></a>
+    <button class="nav-cta" onclick="document.getElementById('pestForm').scrollIntoView({behavior:'smooth'})">📋 קבלת הצעת מחיר</button>
+  </nav>
+
+  <!-- ══ Hero ══ -->
+  <div class="site-hero">
+    <div class="hero-brand">
+      <div class="hero-bug">
+        <img src="logo.jpeg" alt="עמית הדברות" />
+      </div>
+      <h1 class="hero-title">עמית הדברות</h1>
+    </div>
+    <p class="hero-sub">היתר הדברה 2128 – המשרד להגנת הסביבה</p>
+    <p class="hero-sub">ותק וניסיון של 15 שנה</p>
+    <div class="hero-badges">
+      <span class="hbadge">🌿 טבעי ובטוח</span>
+      <span class="hbadge">⭐ 15 שנות ניסיון</span>
+    </div>
+    <button class="hbadge-cert" onclick="openCertModal()">📜 היתר הדברה – לחץ לצפייה</button>
+    <button class="hero-cta" onclick="document.getElementById('pestForm').scrollIntoView({behavior:'smooth'})">
+      📋 קבלת הצעת מחיר
+    </button>
+
+  </div>
+
+  <!-- Wave -->
+  <div class="wave">
+    <svg viewBox="0 0 1200 50" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0,25 C200,50 400,0 600,25 C800,50 1000,0 1200,25 L1200,50 L0,50 Z"
+            fill="rgba(255,255,255,0.97)" />
+    </svg>
+  </div>
+
+  <!-- ══ הכן ביתך להדברה + Form ══ -->
+  <main>
+    <div class="prep-card">
+      <div class="prep-card-inner">
+
+        <h2 class="prep-heading">הכן ביתך להדברה</h2>
+        <p class="prep-services">✦ תיקנים &nbsp;✦ מכרסמים &nbsp;✦ פרעושים &nbsp;✦ נמלים &nbsp;✦ ועוד</p>
+
+        <!-- Before / After sections -->
+        <div class="prep-sections">
+
+          <!-- לפני ההדברה -->
+          <div class="prep-section prep-section-before">
+            <div class="prep-section-title">🔴 לפני ההדברה</div>
+            <ul class="prep-list">
+              <li><span class="prep-icon">✅</span> לפנות את השיש במטבח ובמקלחות</li>
+              <li><span class="prep-icon">✅</span> לרוקן את הארון מתחת לכיור במטבח</li>
+              <li><span class="prep-icon">✅</span> לפנות רצפת הבית מבגדים, נעליים ומשחקים</li>
+              <li><span class="prep-icon">✅</span> להרחיק רהיטים וחפצים כ-15 ס"מ מקירות הבית</li>
+            </ul>
+            <div class="prep-warn">
+              <span>⚠️</span>
+              <span>אנשים ובעלי חיים <strong>לא ישהו בבית</strong> בזמן ההדברה</span>
+            </div>
+          </div>
+
+          <!-- לאחר ההדברה -->
+          <div class="prep-section prep-section-after">
+            <div class="prep-section-title">🟢 לאחר ההדברה</div>
+            <ul class="prep-list">
+              <li><span class="prep-icon">🕐</span> <span><strong>כניסת אנשים</strong> – לאחר שעתיים</span></li>
+              <li><span class="prep-icon">🐾</span> <span><strong>כניסת בעלי חיים</strong> – לאחר שש שעות</span></li>
+              <li><span class="prep-icon">🧹</span> <span><strong>שטיפת רצפה</strong> – ניתן לשטוף לאחר יומיים</span></li>
+            </ul>
+          </div>
+
+        </div>
+
+        <!-- Big CTA -->
+        <button class="prep-cta-btn" onclick="document.getElementById('pestForm').scrollIntoView({behavior:'smooth'})">
+          📋 קבלת הצעת מחיר עכשיו
+        </button>
+
+      </div>
+    </div>
+    <div class="main-card">
+      <div class="form-heading">קבלת הצעת מחיר</div>
+      <div class="form-sub">מלאו את הפרטים ותישלח הודעה מסודרת לעמית ישירות בוואטסאפ 📱</div>
+
+      <form id="pestForm" novalidate>
+
+        <!-- 1. לקוח -->
+        <div class="sc">
+          <div class="sc-title">👤 פרטי לקוח</div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label class="lbl">שם מלא</label>
+              <input type="text" id="customerName" class="inp" placeholder="ישראל ישראלי" />
+            </div>
+            <div>
+              <label class="lbl">מספר טלפון</label>
+              <input type="tel" id="customerPhone" class="inp" placeholder="050-0000000" />
+            </div>
+          </div>
+        </div>
+
+        <!-- 2. סוג המזיק – checkboxes (ניתן לסמן כמה) -->
+        <div class="sc">
+          <div class="sc-title">🐛 סוג המזיק <span style="font-size:12px;font-weight:400;color:#6b7280">(ניתן לסמן יותר מאחד)</span></div>
+          <div class="pest-grid">
+            <label class="pest-opt"><input type="checkbox" name="pestType" value="ג'וקים"              /><span class="pest-pill">🪳 ג׳וקים</span></label>
+            <label class="pest-opt"><input type="checkbox" name="pestType" value="נמלים"              /><span class="pest-pill">🐜 נמלים</span></label>
+            <label class="pest-opt"><input type="checkbox" name="pestType" value="פשפש המיטה"        /><span class="pest-pill">🛏️ פשפש מיטה</span></label>
+            <label class="pest-opt"><input type="checkbox" name="pestType" value="חולדות"             /><span class="pest-pill">🐭 חולדות</span></label>
+            <label class="pest-opt"><input type="checkbox" name="pestType" value="כיני יונים (קרציונים)" /><span class="pest-pill">🕊️ כיני יונים</span></label>
+            <label class="pest-opt"><input type="checkbox" name="pestType" value="פרעושים"            /><span class="pest-pill">🦟 פרעושים</span></label>
+            <label class="pest-opt" id="pestOtherCheck"><input type="checkbox" name="pestType" value="אחר" onchange="togglePestOther()" /><span class="pest-pill">➕ אחר</span></label>
+          </div>
+          <div id="pestOtherWrap" class="hidden mt-3">
+            <input type="text" id="pestOtherText" class="inp" placeholder="פרטו את סוג המזיק..." />
+          </div>
+        </div>
+
+        <!-- 3. סוג הנכס -->
+        <div class="sc">
+          <div class="sc-title">🏠 סוג הנכס</div>
+          <select id="propertyType" class="inp" onchange="onPropertyChange()">
+            <option value="">-- בחר סוג נכס --</option>
+            <option value="דירה בבניין">דירה בבניין</option>
+            <option value="בית קרקע עם חצר">בית קרקע עם חצר</option>
+            <option value="משרד">משרד</option>
+            <option value="חדר מדרגות">חדר מדרגות</option>
+            <option value="אחר">אחר</option>
+          </select>
+
+          <!-- אחר – פרטים -->
+          <div id="propertyOtherWrap" class="hidden mt-3">
+            <label class="lbl">פרטו את סוג הנכס</label>
+            <input type="text" id="propertyOtherText" class="inp" placeholder="למשל: מחסן, גן ילדים..." />
+          </div>
+
+          <div class="grid grid-cols-2 gap-4 mt-4">
+            <div>
+              <label class="lbl">מספר חדרים</label>
+              <input type="number" id="numRooms" class="inp" placeholder="3" min="1" max="30" />
+            </div>
+            <div id="yardWrap" class="hidden">
+              <label class="lbl">גודל חצר (מ״ר)</label>
+              <input type="number" id="yardSize" class="inp" placeholder="150" min="1" />
+            </div>
+          </div>
+        </div>
+
+        <!-- 4. בטיחות ורגישויות -->
+        <div class="sc">
+          <div class="sc-title">⚠️ בטיחות ורגישויות</div>
+          <label class="chk-row">
+            <input type="checkbox" id="hasPets" onchange="togglePets()" />
+            <span>🐾 יש חיות מחמד בבית</span>
+          </label>
+          <div id="petsWrap" class="hidden mb-3" style="padding-right:29px">
+            <input type="text" id="petsType" class="inp" placeholder="למשל: כלב וחתול" />
+          </div>
+          <label class="chk-row">
+            <input type="checkbox" id="hasBabies" />
+            <span>👶 תינוקות זוחלים</span>
+          </label>
+          <label class="chk-row">
+            <input type="checkbox" id="hasPregnant" />
+            <span>🤰 נשים בהיריון</span>
+          </label>
+        </div>
+
+        <!-- 5. כתובת -->
+        <div class="sc">
+          <div class="sc-title">📍 כתובת</div>
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div>
+              <label class="lbl">עיר</label>
+              <input type="text" id="city" class="inp" placeholder="תל אביב" />
+            </div>
+            <div>
+              <label class="lbl">רחוב ומספר</label>
+              <input type="text" id="street" class="inp" placeholder="הרצל 12" />
+            </div>
+            <div>
+              <label class="lbl">קומה</label>
+              <input type="text" id="floor" class="inp" placeholder="3" />
+            </div>
+          </div>
+        </div>
+
+        <!-- 6. זמן מועדף -->
+        <div class="sc">
+          <div class="sc-title">🕐 זמן מועדף לביקור</div>
+          <select id="preferredTime" class="inp">
+            <option value="">-- בחר זמן מועדף --</option>
+            <option value="בוקר מוקדם (לפני 8:00)">בוקר מוקדם (לפני 8:00)</option>
+            <option value="בוקר אחרי 8:00">בוקר אחרי 8:00</option>
+            <option value="צהריים">צהריים</option>
+            <option value='אחה"צ'>אחה"צ</option>
+          </select>
+        </div>
+
+        <!-- 7. הערות -->
+        <div class="sc" style="margin-bottom:22px">
+          <div class="sc-title">📝 הערות נוספות</div>
+          <textarea id="notes" class="inp" rows="3" placeholder="כל מידע נוסף שחשוב שעמית ידע..."></textarea>
+        </div>
+
+        <!-- שליחה -->
+        <button type="submit" class="submit-btn">
+          📱 שלח בקשה להצעת מחיר בוואטסאפ
+        </button>
+
+      </form>
+    </div>
+  </main>
+
+  <!-- Certificate Modal -->
+  <div class="cert-modal-overlay" id="certModal" onclick="closeCertModal(event)">
+    <div class="cert-modal-box">
+      <button class="cert-modal-close" onclick="closeCertModal()">✕</button>
+      <div class="cert-modal-title">תעודת רישיון הדברה מס׳ 2128</div>
+      <img class="cert-modal-img" src="תעודת מרסס.jpeg" alt="תעודת רישיון הדברה" />
+    </div>
+  </div>
+
+  <!-- ══ Footer ══ -->
+  <footer>
+    <strong class="footer-brand">עמית הדברות</strong><br />
+    רישיון מס׳ 2128 &nbsp;|&nbsp; ותק של 15 שנה<br />
+    🌿 הדברה בטוחה לסביבה ולמשפחה שלך
+    <div class="footer-credit">
+      האתר נבנה על ידי
+      <a href="https://www.linkedin.com/in/tomer-cohen-486457346/" target="_blank" rel="noopener">תומר כהן 🔗</a>
+    </div>
+  </footer>
+
+  <script>
+    /* ── Navbar fade on scroll ── */
+    (function() {
+      var nav = document.querySelector('.navbar');
+      var threshold = 80;
+      function onScroll() {
+        if (window.scrollY > threshold) {
+          nav.classList.add('visible');
+        } else {
+          nav.classList.remove('visible');
+        }
+      }
+      window.addEventListener('scroll', onScroll, { passive: true });
+    })();
+
+    /* ── Certificate modal ── */
+    function openCertModal() {
+      document.getElementById('certModal').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeCertModal(e) {
+      if (e && e.target !== document.getElementById('certModal')) return;
+      document.getElementById('certModal').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') closeCertModal();
+    });
+
+    /* ── Dynamic field toggles ── */
+    function onPropertyChange() {
+      const val = document.getElementById('propertyType').value;
+      document.getElementById('yardWrap').classList.toggle('hidden', val !== 'בית קרקע עם חצר');
+      document.getElementById('propertyOtherWrap').classList.toggle('hidden', val !== 'אחר');
+    }
+    function togglePets() {
+      document.getElementById('petsWrap').classList.toggle('hidden', !document.getElementById('hasPets').checked);
+    }
+    function togglePestOther() {
+      const checked = document.querySelector('input[value="אחר"][name="pestType"]').checked;
+      document.getElementById('pestOtherWrap').classList.toggle('hidden', !checked);
+    }
+
+    /* ── Build WhatsApp message ── */
+    function buildMessage() {
+      const get   = id => document.getElementById(id).value.trim();
+      const check = id => document.getElementById(id).checked;
+
+      const name  = get('customerName');
+      const phone = get('customerPhone');
+
+      // Multiple pest types
+      const checkedPests = [...document.querySelectorAll('input[name="pestType"]:checked')]
+        .map(el => el.value === 'אחר' ? null : el.value)
+        .filter(Boolean);
+      const pestOther = get('pestOtherText');
+      if (pestOther) checkedPests.push(`אחר: ${pestOther}`);
+
+      // Property
+      let propertyType = get('propertyType');
+      if (propertyType === 'אחר') {
+        const other = get('propertyOtherText');
+        propertyType = other ? `אחר: ${other}` : 'אחר';
+      }
+
+      const numRooms    = get('numRooms');
+      const yardSize    = get('yardSize');
+      const hasPets     = check('hasPets');
+      const petsType    = get('petsType');
+      const hasBabies   = check('hasBabies');
+      const hasPregnant = check('hasPregnant');
+      const city        = get('city');
+      const street      = get('street');
+      const floor       = get('floor');
+      const time        = get('preferredTime');
+      const notes       = get('notes');
+
+      let m = 'היי עמית! 👋\nאשמח לקבל הצעת מחיר להדברה:\n';
+      m += '──────────────────\n';
+
+      if (name)  m += `👤 שם: ${name}\n`;
+      if (phone) m += `📱 טלפון: ${phone}\n`;
+
+      if (checkedPests.length)
+        m += `🐛 סוג מזיק: ${checkedPests.join(', ')}\n`;
+
+      if (propertyType) {
+        let prop = `🏠 סוג נכס: ${propertyType}`;
+        if (numRooms) prop += ` | ${numRooms} חדרים`;
+        m += prop + '\n';
+        if (propertyType === 'בית קרקע עם חצר' && yardSize)
+          m += `📐 גודל חצר: ${yardSize} מ"ר\n`;
+      } else if (numRooms) {
+        m += `🏠 מספר חדרים: ${numRooms}\n`;
+      }
+
+      const sens = [];
+      if (hasPets)     sens.push('חיות מחמד' + (petsType ? ` (${petsType})` : ''));
+      if (hasBabies)   sens.push('תינוקות זוחלים');
+      if (hasPregnant) sens.push('נשים בהיריון');
+      if (sens.length) m += `⚠️ רגישויות: ${sens.join(', ')}\n`;
+
+      const addr = [street, floor ? `קומה ${floor}` : '', city].filter(Boolean).join(', ');
+      if (addr) m += `📍 כתובת: ${addr}\n`;
+
+      if (time) m += `🕐 זמן מועדף: ${time}\n`;
+
+      if (notes) {
+        m += '──────────────────\n';
+        m += `📝 הערות: ${notes}\n`;
+      }
+      m += '──────────────────\n';
+      m += 'תודה! 🌿';
+      return m;
+    }
+
+    document.getElementById('pestForm').addEventListener('submit', function (e) {
+      e.preventDefault();
+      const url = 'https://wa.me/972528361196?text=' + encodeURIComponent(buildMessage());
+      window.open(url, '_blank');
+    });
+  </script>
+</body>
+</html>
